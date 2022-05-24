@@ -103,8 +103,8 @@
                         }
 
                     },
-                    isHost: /^yes$/i.test(prompt('Are you going to be host?')),
-                    gameName: prompt('Enter game name:'),
+                    isHost: /^y$/i.test(prompt('¿Vas a ser host? (Y/N)')),
+                    gameName: prompt('Introduce el nombre de la partida'),
                     gameType: 'network'
                 };
 

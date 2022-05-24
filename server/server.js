@@ -5,9 +5,7 @@ var express = require('express'),
     GameCollection = require('./games.js').GameCollection,
     games = new GameCollection();
 
-app.configure(function () {
-  app.use(express.static(__dirname + '/../game'));
-});
+app.use(express.static(__dirname + '/../game'));
 
 server.listen(55555);
 

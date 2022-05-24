@@ -1,10 +1,11 @@
 var Messages = {
-  EVENT: 'event',
-  LIFE_UPDATE: 'life-update',
-  POSITION_UPDATE: 'position-update',
-  PLAYER_CONNECTED: 'player-connected'
+  EVENT: "event",
+  LIFE_UPDATE: "life-update",
+  POSITION_UPDATE: "position-update",
+  PLAYER_CONNECTED: "player-connected",
+  PAUSE: "pause",
+  UNPAUSE: "unpause",
 };
-
 
 function Game(id, gameCollection) {
   this._id = id;
@@ -30,9 +31,9 @@ Game.prototype.addPlayer = function (p) {
 
 Game.prototype._addHandlers = function () {
   var p1 = this._players[0],
-      p2 = this._players[1],
-      m = Messages,
-      self = this;
+    p2 = this._players[1],
+    m = Messages,
+    self = this;
   p1.on(m.EVENT, function (data) {
     p2.emit(m.EVENT, data);
   });
@@ -51,10 +52,22 @@ Game.prototype._addHandlers = function () {
   p2.on(m.POSITION_UPDATE, function (data) {
     p1.emit(m.POSITION_UPDATE, data);
   });
-  p1.on('disconnect', function () {
+  p1.on(m.PAUSE, (data) => {
+    p2.emit(m.PAUSE, data);
+  });
+  p2.on(m.PAUSE, (data) => {
+    p1.emit(m.PAUSE, data);
+  });
+  p1.on(m.UNPAUSE, (data) => {
+    p2.emit(m.UNPAUSE, data);
+  });
+  p2.on(m.UNPAUSE, (data) => {
+    p1.emit(m.UNPAUSE, data);
+  });
+  p1.on("disconnect", function () {
     self.endGame(0);
   });
-  p2.on('disconnect', function () {
+  p2.on("disconnect", function () {
     self.endGame(1);
   });
 };
